@@ -3,11 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-
-
-
-
-
 def racecar(N=25,path:bool=False,con:bool=False,mesh:str|None='uni'):
     # integral constraint on path constriant and control bounds
     # sparse grid intentionally used
@@ -82,9 +77,9 @@ def get_integrator(path,con,nx,nu):
     t0s = cs.SX.sym("t0s")
     tfs = cs.SX.sym("tfs")
     def fnew(f):
-        eps=1e-16
-        return (0.5*(f+cs.sqrt(f**2+eps**2)))**2
-        #return (cs.fmax(0,f))
+        eps=1e-10
+        #return (0.5*(f+cs.sqrt(f**2+eps**2)))**2
+        return (cs.fmax(0,f))**2
 
     aug_ode=[]
     if path:
@@ -93,11 +88,6 @@ def get_integrator(path,con,nx,nu):
         aug_ode.append(fnew(us - 1))
         aug_ode.append(fnew(0-us))
 
-#    if path:
-#        aug_ode.append(cs.fmax(0, xs[1] - (1 - 0.5 * (cs.sin(2 * cs.pi * xs[0])))) ** 2)
-#    if con:
-#        aug_ode.append(cs.fmax(0, us - 1) ** 2)
-#        aug_ode.append(cs.fmax(0, 0-us) ** 2)
     ode=[xs[1],us - xs[1]]
     dae = {
         "x": xs,
@@ -108,7 +98,7 @@ def get_integrator(path,con,nx,nu):
 
     xr = cs.integrator(
         "integrator",
-        "rk",
+        "collocation",
         dae,
         0,
         1,
@@ -172,6 +162,4 @@ def plot_soln(sol:cs.OptiSol,X:cs.MX,U:cs.MX,t:cs.MX,vio:cs.Function):
     show()
 
 
-#racecar_point_wise()
-#racecar_ct_h_u()
-racecar(N=300,path=True,con=True,mesh='uni')
+racecar(N=30,path=False,con=False,mesh='uni')
