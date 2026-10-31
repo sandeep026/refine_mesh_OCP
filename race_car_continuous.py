@@ -161,5 +161,5 @@ def plot_soln(sol:cs.OptiSol,X:cs.MX,U:cs.MX,t:cs.MX,vio:cs.Function):
 
     show()
 
-
+# true -> the path constraint inequality converted to a equality constraint
 racecar(N=30,path=False,con=False,mesh='uni')
