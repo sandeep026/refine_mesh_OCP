@@ -34,7 +34,7 @@ $$
 x_{\text{ct}}(t_0) = x_{\text{ct}}(t_f) = 0
 $$
 
-> **Note:** This augmentation can affect the convergence of the NLP solver due to LICQ (Linear Independence Constraint Qualification) failure, so special care is required during implementation.
+> **Note:** This augmentation can affect the convergence of the NLP solver due to LICQ (Linear Independence Constraint Qualification) failure, so special care is required during implementation. Also, the inequality constraint is now transformed to a equality constraint.
 
 
 ### Mesh Refinement
